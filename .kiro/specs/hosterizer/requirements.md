@@ -18,6 +18,8 @@ Hosterizer is a multi-tenant cloud hosting platform that enables users to deploy
 - **Admin Portal**: Web interface for Administrators to manage Customers and Sites
 - **Customer Portal**: Web interface for Customers to manage their Sites
 - **Deployment Request**: A request to provision or update a Site's infrastructure
+- **Ecommerce Platform**: Third-party service for online commerce (Shopify, WooCommerce, BigCommerce)
+- **Ecommerce Integration**: Configuration connecting a Site to an Ecommerce Platform
 
 ## Requirements
 
@@ -214,3 +216,18 @@ Hosterizer is a multi-tenant cloud hosting platform that enables users to deploy
 3. THE Hosterizer System SHALL allow 100 API requests per minute per Customer for standard operations
 4. THE Hosterizer System SHALL allow 10 Deployment Requests per hour per Customer
 5. WHERE a Customer has a premium tier, THE Hosterizer System SHALL apply higher rate limits
+
+### Requirement 16: Ecommerce Platform Integration
+
+**User Story:** As a Customer, I want to integrate ecommerce capabilities into my Sites, so that I can sell products and services online without building custom ecommerce infrastructure.
+
+#### Acceptance Criteria
+
+1. THE Hosterizer System SHALL support integration with Shopify ecommerce platform
+2. THE Hosterizer System SHALL support integration with WooCommerce ecommerce platform
+3. THE Hosterizer System SHALL support integration with BigCommerce ecommerce platform
+4. WHEN a Customer configures ecommerce integration for a Site, THE Hosterizer System SHALL store the integration credentials securely
+5. THE Hosterizer System SHALL provide API endpoints to configure ecommerce platform connections per Site
+6. WHEN a Site is provisioned with ecommerce integration, THE Hosterizer System SHALL include necessary infrastructure components for the ecommerce platform
+7. THE Customer Portal SHALL allow Customers to select and configure their preferred ecommerce platform during Site creation
+8. THE Hosterizer System SHALL validate ecommerce platform credentials before saving the configuration
