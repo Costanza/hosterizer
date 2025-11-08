@@ -1,0 +1,7 @@
+module github.com/hosterizer/policy-service
+
+go 1.21
+
+require (
+	github.com/lib/pq v1.10.9
+)

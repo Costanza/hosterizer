@@ -8,5 +8,6 @@
 - White label capability to easily support multiple customers
 - Secure and private data and tenancy segregation per customer and per site
 - Administration website for the person running hosterizer to administer the fleet of customers and sites
+- E-commerce capability needed via Shopify and other similar offerings
 - Cloud policy and cost management needs to be included
 - Use the LGTM stack for observaility

@@ -9,3 +9,4 @@
 - Prefer handling errors and returning first in functions
 - Limit nesting as much as possible
 - Prefer composition over inheritence
+- Prefer a test driven development mentaility ensuring everything comes with high test coverage

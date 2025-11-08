@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: hosterizer-postgres
+    environment:
+      POSTGRES_DB: hosterizer
+      POSTGRES_USER: hosterizer
+      POSTGRES_PASSWORD: hosterizer_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hosterizer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: hosterizer-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Observability Stack (LGTM)
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: hosterizer-loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki_data:/loki
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: hosterizer-grafana
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - loki
+      - tempo
+      - mimir
+
+  tempo:
+    image: grafana/tempo:2.3.0
+    container_name: hosterizer-tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - tempo_data:/tmp/tempo
+
+  mimir:
+    image: grafana/mimir:2.10.0
+    container_name: hosterizer-mimir
+    ports:
+      - "9009:9009"
+    command: [ "-config.file=/etc/mimir.yaml" ]
+    volumes:
+      - mimir_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+  loki_data:
+  grafana_data:
+  tempo_data:
+  mimir_data:
+
+networks:
+  default:
+    name: hosterizer-network
