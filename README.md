@@ -67,11 +67,33 @@ hosterizer/
 5. Run database migrations
 6. Start services
 
+## API Testing
+
+The project includes a comprehensive Bruno API collection for testing all endpoints.
+
+**Quick Start:**
+```bash
+# Install Bruno from https://www.usebruno.com/downloads
+# Open collection: bruno/hosterizer-api
+
+# Create test users
+./scripts/create-test-user.sh  # Linux/Mac
+.\scripts\create-test-user.ps1  # Windows
+
+# Start testing!
+```
+
+**Documentation:**
+- [Quick Start Guide](bruno/QUICKSTART.md) - Get started in 5 minutes
+- [API Testing Guide](docs/api-testing.md) - Comprehensive testing documentation
+- [Collection README](bruno/hosterizer-api/README.md) - Detailed collection documentation
+
 ## Documentation
 
 - [Requirements](/.kiro/specs/hosterizer/requirements.md)
 - [Design](/.kiro/specs/hosterizer/design.md)
 - [Implementation Tasks](/.kiro/specs/hosterizer/tasks.md)
+- [API Testing](docs/api-testing.md)
 
 ## License
 

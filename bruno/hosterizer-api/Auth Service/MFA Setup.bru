@@ -1,0 +1,60 @@
+meta {
+  name: MFA Setup
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{auth_base_url}}/mfa/setup
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  # MFA Setup
+  
+  Initialize MFA setup for the authenticated user.
+  Returns a secret and QR code URL for scanning with an authenticator app.
+  
+  ## Prerequisites
+  - Must be authenticated (have valid access token)
+  - Run "Login - Success" first
+  
+  ## Expected Response
+  - Status: 200 OK
+  - Returns secret (base32 encoded)
+  - Returns qr_code_url (otpauth:// URL)
+  
+  ## Next Steps
+  1. Scan the QR code with an authenticator app (Google Authenticator, Authy, etc.)
+  2. Use the generated code to verify MFA setup
+}
+
+script:post-response {
+  if (res.status === 200 && res.body.secret) {
+    bru.setEnvVar("mfa_secret", res.body.secret);
+    bru.setEnvVar("mfa_qr_code", res.body.qr_code_url);
+    console.log("MFA Secret:", res.body.secret);
+    console.log("QR Code URL:", res.body.qr_code_url);
+  }
+}
+
+tests {
+  test("should return 200 OK", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("should return secret", function() {
+    expect(res.body.secret).to.be.a('string');
+    expect(res.body.secret.length).to.be.greaterThan(0);
+  });
+  
+  test("should return QR code URL", function() {
+    expect(res.body.qr_code_url).to.be.a('string');
+    expect(res.body.qr_code_url).to.include('otpauth://');
+  });
+}

@@ -1,0 +1,31 @@
+meta {
+  name: Get Current User - Unauthorized
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{auth_base_url}}/me
+  body: none
+  auth: none
+}
+
+docs {
+  # Get Current User - Unauthorized
+  
+  Test accessing protected endpoint without authentication.
+  
+  ## Expected Response
+  - Status: 401 Unauthorized
+  - Error message about missing or invalid token
+}
+
+tests {
+  test("should return 401 Unauthorized", function() {
+    expect(res.status).to.equal(401);
+  });
+  
+  test("should return error message", function() {
+    expect(res.body.error).to.be.a('string');
+  });
+}

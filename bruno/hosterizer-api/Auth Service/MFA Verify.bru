@@ -1,0 +1,52 @@
+meta {
+  name: MFA Verify
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{auth_base_url}}/mfa/verify
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "code": "123456"
+  }
+}
+
+docs {
+  # MFA Verify
+  
+  Verify and enable MFA using a TOTP code from the authenticator app.
+  
+  ## Prerequisites
+  - Must be authenticated
+  - Must have run "MFA Setup" first
+  - Must have scanned QR code with authenticator app
+  - Replace "123456" with the actual code from your authenticator app
+  
+  ## Expected Response
+  - Status: 200 OK (if code is valid)
+  - Status: 400 Bad Request (if code is invalid)
+  - Message confirming MFA enabled
+  
+  ## After Success
+  - MFA will be required for all future logins
+  - User's mfa_enabled flag will be set to true
+}
+
+tests {
+  test("should return 200 OK or 400 Bad Request", function() {
+    expect([200, 400]).to.include(res.status);
+  });
+  
+  test("should return message", function() {
+    expect(res.body.message).to.be.a('string');
+  });
+}

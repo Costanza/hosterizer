@@ -1,0 +1,69 @@
+meta {
+  name: Login - With MFA
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{auth_base_url}}/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "admin@hosterizer.com",
+    "password": "AdminPass123!",
+    "mfa_code": "123456"
+  }
+}
+
+docs {
+  # Login - With MFA
+  
+  Test login for a user with MFA enabled.
+  
+  ## Prerequisites
+  - User must have MFA enabled
+  - Replace "123456" with actual TOTP code from authenticator app
+  
+  ## Two-Step Process
+  
+  ### Step 1: Login without MFA code
+  If you omit the mfa_code, you'll get:
+  - Status: 200 OK
+  - requires_mfa: true
+  - No tokens returned
+  
+  ### Step 2: Login with MFA code
+  Include the mfa_code from your authenticator app:
+  - Status: 200 OK
+  - requires_mfa: false
+  - Returns access_token and refresh_token
+  
+  ## Expected Response (with valid code)
+  - Status: 200 OK
+  - Returns tokens and user information
+}
+
+script:post-response {
+  if (res.status === 200 && res.body.access_token) {
+    bru.setEnvVar("access_token", res.body.access_token);
+    bru.setEnvVar("refresh_token", res.body.refresh_token);
+  }
+}
+
+tests {
+  test("should return 200 OK", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("should handle MFA flow", function() {
+    if (res.body.requires_mfa) {
+      expect(res.body.access_token).to.be.undefined;
+    } else {
+      expect(res.body.access_token).to.be.a('string');
+      expect(res.body.refresh_token).to.be.a('string');
+    }
+  });
+}

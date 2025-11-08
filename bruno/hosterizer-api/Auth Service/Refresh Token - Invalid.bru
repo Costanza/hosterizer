@@ -1,0 +1,38 @@
+meta {
+  name: Refresh Token - Invalid
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{auth_base_url}}/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refresh_token": "invalid.token.here"
+  }
+}
+
+docs {
+  # Refresh Token - Invalid
+  
+  Test token refresh with an invalid refresh token.
+  
+  ## Expected Response
+  - Status: 401 Unauthorized
+  - Error message about invalid token
+}
+
+tests {
+  test("should return 401 Unauthorized", function() {
+    expect(res.status).to.equal(401);
+  });
+  
+  test("should return error message", function() {
+    expect(res.body.error).to.be.a('string');
+    expect(res.body.message).to.be.a('string');
+  });
+}

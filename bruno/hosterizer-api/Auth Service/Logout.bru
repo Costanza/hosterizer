@@ -1,0 +1,48 @@
+meta {
+  name: Logout
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{auth_base_url}}/logout
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  # Logout
+  
+  Logout the current user.
+  
+  ## Note
+  In a stateless JWT system, logout is primarily handled client-side
+  by removing the token. This endpoint confirms the logout action.
+  
+  ## Prerequisites
+  - Should be authenticated (though not strictly required)
+  
+  ## Expected Response
+  - Status: 200 OK
+  - Success message
+  
+  ## Client-Side Actions
+  After logout, the client should:
+  1. Remove access_token from storage
+  2. Remove refresh_token from storage
+  3. Redirect to login page
+}
+
+tests {
+  test("should return 200 OK", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("should return success message", function() {
+    expect(res.body.message).to.be.a('string');
+  });
+}

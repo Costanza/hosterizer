@@ -1,0 +1,49 @@
+meta {
+  name: Get Current User
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{auth_base_url}}/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+docs {
+  # Get Current User
+  
+  Retrieve information about the currently authenticated user.
+  
+  ## Prerequisites
+  - Must be authenticated (have valid access token)
+  - Run "Login - Success" first to get access token
+  
+  ## Expected Response
+  - Status: 200 OK
+  - Returns user information (id, uuid, email, name, role, mfa_enabled)
+}
+
+tests {
+  test("should return 200 OK", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("should return user information", function() {
+    expect(res.body).to.be.an('object');
+    expect(res.body.id).to.be.a('number');
+    expect(res.body.uuid).to.be.a('string');
+    expect(res.body.email).to.be.a('string');
+    expect(res.body.first_name).to.be.a('string');
+    expect(res.body.last_name).to.be.a('string');
+    expect(res.body.role).to.be.a('string');
+  });
+  
+  test("should have valid role", function() {
+    expect(['administrator', 'customer']).to.include(res.body.role);
+  });
+}

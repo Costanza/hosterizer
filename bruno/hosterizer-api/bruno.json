@@ -1,0 +1,9 @@
+{
+    "version": "1",
+    "name": "Hosterizer API",
+    "type": "collection",
+    "ignore": [
+        "node_modules",
+        ".git"
+    ]
+}
