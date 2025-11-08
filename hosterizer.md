@@ -1,0 +1,12 @@
+# Hosterizer General Overview
+- Hosterizer aims to be a one-stop-shop for someone who wants to host multiple websites in the cloud
+- Multiple cloud providers need to be supported including, but not limited to AWS, Azure, GCP, Digbital Ocean, and Akamai Cloud
+- Infrastructure as code to build all cloud infrastucture via Terraform
+- React as the standard front end supporting at least a choice of Bootstrap or Tailwind for styling
+- Golang as the standard for backend APIs, with Python as an option
+- Postgres as the standard for databases
+- White label capability to easily support multiple customers
+- Secure and private data and tenancy segregation per customer and per site
+- Administration website for the person running hosterizer to administer the fleet of customers and sites
+- Cloud policy and cost management needs to be included
+- Use the LGTM stack for observaility
